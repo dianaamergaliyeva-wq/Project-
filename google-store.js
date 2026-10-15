@@ -10,7 +10,7 @@ export function loadResults() {
         const script = document.createElement('script');
         const callbacks = window;
         const cleanup = () => { clearTimeout(timer); script.remove(); delete callbacks[callback]; };
-        const timer = setTimeout(() => { cleanup(); reject(Error('Не удалось загрузить результаты')); }, 20000);
+        const timer = setTimeout(() => { script.remove(); callbacks[callback] = () => { delete callbacks[callback]; }; setTimeout(() => { delete callbacks[callback]; }, 300000); reject(Error('Не удалось загрузить результаты. Нажмите «Обновить».')); }, 60000);
         callbacks[callback] = (data) => { cleanup(); if (data.error)
             reject(Error(data.error));
         else
